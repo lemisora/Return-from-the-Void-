@@ -3,8 +3,8 @@ public class Nave extends Objetos{
   protected int Balas;
   protected int Capsulas;
 
-  public Nave(){
-    super();
+  public Nave(int sp, int x, int y){
+    super(sp,x,y);
     
   }
 }
