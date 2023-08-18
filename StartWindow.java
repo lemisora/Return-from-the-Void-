@@ -83,10 +83,12 @@ public class StartWindow extends JFrame{
     this.setVisible(true);
   }
 
+  
+
   private void cambiarImagenDeFondo(JBackgroundPanel panelConImagen, BufferedImage image) {
-    panelConImagen.setImagen(image);
-    panelConImagen.repaint();
-}
+      panelConImagen.setImagen(image);
+      panelConImagen.repaint();
+  }
 
   public static void main(String[] args) {
     StartWindow ventanaInicial = new StartWindow(); //Se crea la ventana con las condiciones y propiedades indicadas anteriormente  
