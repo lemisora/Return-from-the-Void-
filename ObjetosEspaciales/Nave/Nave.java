@@ -1,4 +1,5 @@
-package ObjetosEspaciales;
+package ObjetosEspaciales.Nave;
+import ObjetosEspaciales.Objetos;
 public class Nave extends Objetos{
   protected int Balas;
   protected int Capsulas;

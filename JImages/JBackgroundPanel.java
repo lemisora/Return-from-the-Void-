@@ -45,7 +45,9 @@ public class JBackgroundPanel extends JPanel {
     public void changeWindow(JFrame frame, int index){
         this.changeBackground(index);
         frame.getContentPane().removeAll();
+
         frame.repaint();
+        //Se podría modificar para poder añadir el panel (Canvas) de cada nivel aquí mismo y añadir el inicio del hilo del nivel 1 acá por ejemplo
     }
 
     public void addMainComponents(int WIDTH, int HEIGHT, JFrame frame){
