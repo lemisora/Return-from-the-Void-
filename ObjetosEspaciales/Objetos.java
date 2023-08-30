@@ -1,7 +1,5 @@
 package ObjetosEspaciales;
-import java.awt.event.KeyEvent;
 import java.util.Random;
-import Model.Input.Teclado;
 public abstract class Objetos{
   //Variables que representan las caracteristicas de los objetos espaciales
   protected int Velocidad;
@@ -14,6 +12,8 @@ public abstract class Objetos{
      this.posX = x;
      this.posY = y;
   }
+
+  public abstract void generaPosicion();
 
   //Getters y setters
   public void setVelocidad(){
@@ -42,8 +42,6 @@ public abstract class Objetos{
     return a;
   }
 
-  abstract public void move(boolean A, boolean D, boolean SPACE);
-
   public int getVelocidad(){
     return Velocidad;
   }
@@ -53,4 +51,5 @@ public abstract class Objetos{
   public int getposY(){
     return posY;
   }
+
 } 

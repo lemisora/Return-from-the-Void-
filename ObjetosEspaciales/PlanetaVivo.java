@@ -5,7 +5,9 @@ public class PlanetaVivo extends Objetos{
   }
 
   @Override
-  public void move(boolean A, boolean D, boolean SPACE) {
+  public void generaPosicion() {
 
   }
+
+
 }

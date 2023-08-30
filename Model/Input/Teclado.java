@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Teclado implements KeyListener {
-    private boolean[] teclas = new boolean[256];
     public static boolean A,D,SPACE;
 
     public Teclado(){
@@ -14,9 +13,7 @@ public class Teclado implements KeyListener {
     }
 
     public void update(){   //Función que actualiza el estado de presionado de las teclas
-        A = teclas[KeyEvent.VK_A];
-        D = teclas[KeyEvent.VK_D];
-        SPACE = teclas[KeyEvent.VK_SPACE];
+
     }
 
     @Override
@@ -24,11 +21,21 @@ public class Teclado implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        teclas[keyEvent.getKeyCode()] = true;
+        if(keyEvent.getKeyCode() == KeyEvent.VK_A){
+            A = true;
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_D) {
+            D = true;
+        }
     }
 
     @Override
-    public void keyReleased(KeyEvent keyEvent) {}
+    public void keyReleased(KeyEvent keyEvent) {
+        if(keyEvent.getKeyCode() == KeyEvent.VK_A){
+            A = false;
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_D) {
+            D = false;
+        }
+    }
 
     public static boolean isA() {
         return A;
@@ -41,4 +48,5 @@ public class Teclado implements KeyListener {
     public static boolean isSPACE() {
         return SPACE;
     }
+
 }
