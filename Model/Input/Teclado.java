@@ -29,4 +29,16 @@ public class Teclado implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {}
+
+    public static boolean isA() {
+        return A;
+    }
+
+    public static boolean isD() {
+        return D;
+    }
+
+    public static boolean isSPACE() {
+        return SPACE;
+    }
 }

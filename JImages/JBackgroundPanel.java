@@ -15,7 +15,7 @@ public class JBackgroundPanel extends JPanel {
         this.bufImage = new BufferedImage[6];
         for(int i=0; i<6; i++){
             try {
-                this.bufImage[i] = ImageIO.read(new File("Resource/Images/"+ (i+1)+ ".png"));
+                this.bufImage[i] = ImageIO.read(new File("Resource/" + (i+1)+ ".png"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

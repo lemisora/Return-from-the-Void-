@@ -1,6 +1,8 @@
 package ObjetosEspaciales;
+import java.awt.event.KeyEvent;
 import java.util.Random;
-public class Objetos{
+import Model.Input.Teclado;
+public abstract class Objetos{
   //Variables que representan las caracteristicas de los objetos espaciales
   protected int Velocidad;
   protected int posX; //Coordenadas verticales del objeto
@@ -20,7 +22,6 @@ public class Objetos{
   }
 
   public int setposY(int y){
-    //Asumiendo que se ejecuta en una terminal de 80x25 se determina el diferencial mediante los intervalos de 30 a 1000, 1000 a 2000 sucesivamente hasta llegar a los 5000 km
     int avanzaY = 0;
     if(this.Velocidad >= 30 && this.Velocidad < 1000){
       avanzaY = 1;
@@ -35,6 +36,13 @@ public class Objetos{
     }
     return avanzaY;
   }
+
+  public int setPosX(int x){
+    int a = x + 10;
+    return a;
+  }
+
+  abstract public void move(boolean A, boolean D, boolean SPACE);
 
   public int getVelocidad(){
     return Velocidad;
