@@ -62,7 +62,7 @@ public class MainJuego extends JFrame implements Runnable{  //Se crea una ventan
         Assets.init();
         planetas = new PlanetaVivo[aleatorio.nextInt(5)+3];         //Se inicializa el arreglo de planetas
         for(i = 0 ; i < planetas.length ; i++){
-            planetas[i] = new PlanetaVivo(0,WIDTH,HEIGHT);
+            planetas[i] = new PlanetaVivo(0,WIDTH, HEIGHT);
         }
     }
     private void update(){

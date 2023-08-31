@@ -2,8 +2,8 @@ package ObjetosEspaciales;
 public class PlanetaVivo extends Objetos{
   public PlanetaVivo(int sp, int x, int y){ //Constructor de la clase Planeta
     super(sp,x,y);
-    this.posX = aleatorio.nextInt(x);
-    this.posX = aleatorio.nextInt(y);
+    this.posX = aleatorio.nextInt(x)+1;
+    this.posY = aleatorio.nextInt(y)+1;
   }
 
   @Override
