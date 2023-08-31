@@ -1,15 +1,18 @@
 //En este archivo va el ejecutable principal del juego en el que se conectaran todas las partes del mismo
 import java.awt.*;
-import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import Model.Assets;
 import Model.Input.Teclado;
-import ObjetosEspaciales.Nave.Nave;
 
-public class MainJuego extends JFrame implements Runnable{ //Se crea una ventana de 1000 x 600
+import java.util.Random;
+
+import ObjetosEspaciales.Nave.Nave;
+import ObjetosEspaciales.PlanetaVivo;
+
+public class MainJuego extends JFrame implements Runnable{  //Se crea una ventana de 1000 x 600
     private final int WIDTH = 1000, HEIGHT = 600;
     private Thread hiloVentana;                             //Se crea un hilo para el control del videojuego
     private Canvas canvas;                                  //Se define un Canvas para el dibujado de los elementos del juego en la ventana
@@ -21,11 +24,17 @@ public class MainJuego extends JFrame implements Runnable{ //Se crea una ventana
     private final int FPS = 60;                             //Limitacion de cuadros en ventana
     private double TARGETTIME = 1000000000/FPS;             //Tiempo objetivo para obtener un cuadro de los 40 por segundo
     private double delta = 0;                               //Diferencia de tiempo
-    private  int averagefps = FPS;                          //Cuadros promedio
+    private int averagefps = FPS;                          //Cuadros promedio
+
+    private Random aleatorio = new Random();
 
     private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlarán los movimientos de la nave
+
     private Nave ship = new Nave(0,WIDTH/2,HEIGHT-50);
+    private PlanetaVivo planetas[];
     private boolean moving = false;
+
+    private int i = 0;
 
     public MainJuego(){                                     //Se establecen propiedades para la ventana
         setTitle("Return from the Void!");
@@ -49,16 +58,23 @@ public class MainJuego extends JFrame implements Runnable{ //Se crea una ventana
         new MainJuego().start();
     }
 
-    private void init() throws IOException, FontFormatException {           //Método para la inicialización de los elementos gráficos del juego
+    private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
         Assets.init();
+        planetas = new PlanetaVivo[aleatorio.nextInt(5)+3];         //Se inicializa el arreglo de planetas
+        for(i = 0 ; i < planetas.length ; i++){
+            planetas[i] = new PlanetaVivo(0,WIDTH,HEIGHT);
+        }
     }
     private void update(){
-        ship.move(keyboard.isA(),keyboard.isD(),keyboard.isSPACE());
+        ship.moveX(keyboard.isA(),keyboard.isD(),keyboard.isSPACE());
+        for(i = 0 ; i < planetas.length ; i++){
+            planetas[i].update();
+        }
     }
     public void draw(){
         buffStrat = canvas.getBufferStrategy();
         if(buffStrat == null){
-            canvas.createBufferStrategy(3);   //Se crea el triple buffer para mejor rendimiento gráfico
+            canvas.createBufferStrategy(3);   //Se crea el triple buffer para mejor rendimiento grafico
             return;
         }
         G = (Graphics2D)buffStrat.getDrawGraphics();
@@ -66,13 +82,18 @@ public class MainJuego extends JFrame implements Runnable{ //Se crea una ventana
         G.setColor(Color.BLACK);                               //Se establece el color de fondo del Canvas como Negro
         G.fillRect(0,0,WIDTH,HEIGHT);
 
+
+
         G.drawImage(Assets.nave,ship.getposX(),ship.getposY(),null);    //Se dibuja la nave en el centro del Canvas
-        G.setColor(Color.WHITE);
+        for(i = 0 ; i < planetas.length ; i++){
+            G.drawImage(Assets.planetaVivo,planetas[i].getposX(),planetas[i].getposY(),null);
+        }
+        G.setColor(Color.YELLOW);
         G.setFont(Assets.fuenteFPS);
-        G.drawString(""+averagefps,10,20);
+        G.drawString("FPS : "+averagefps,10,20);
         G.dispose();
         buffStrat.show();                                      //Se muestran suavemente los objetos del juego con TripleBuffer
-        Toolkit.getDefaultToolkit().sync();                    //Se activa la sincronización vertical, mejora el rendimiento con OpenGL en distribuciones de Linux
+        Toolkit.getDefaultToolkit().sync();                    //Se activa la sincronizacion vertical, mejora el rendimiento con OpenGL en distribuciones de Linux y BSD
     }
     @Override
     public void run() {
@@ -82,7 +103,7 @@ public class MainJuego extends JFrame implements Runnable{ //Se crea una ventana
         long time = 0;
 
         try {
-            init();
+            init();                                             //Se carga en memoria cada uno de los elementos que se necesitan para la ejecucion del juego
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (FontFormatException e) {

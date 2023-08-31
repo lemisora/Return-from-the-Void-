@@ -15,9 +15,17 @@ public class Nave extends Objetos{
   }
 
   @Override
+  public void moveY() {}
+
+  @Override
   public void generaPosicion() {}
 
-  public void move(boolean A, boolean D, boolean SP) {
+  @Override
+  public void update() {
+
+  }
+
+  public void moveX(boolean A, boolean D, boolean SP) {
     this.A = A;
     this.D = D;
     this.SPACE = SP;

@@ -5,8 +5,17 @@ public class Planeta_NoVivo extends Objetos{
   }
 
   @Override
+  public void moveY() {
+
+  }
+
+  @Override
   public void generaPosicion() {
 
+  }
+
+  @Override
+  public void update() {
   }
 
 

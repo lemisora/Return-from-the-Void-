@@ -13,7 +13,9 @@ public abstract class Objetos{
      this.posY = y;
   }
 
+  public abstract void moveY();
   public abstract void generaPosicion();
+  public abstract void update();
 
   //Getters y setters
   public void setVelocidad(){
@@ -38,7 +40,7 @@ public abstract class Objetos{
   }
 
   public int setPosX(int x){
-    int a = x + 10;
+    int a = aleatorio.nextInt();
     return a;
   }
 
