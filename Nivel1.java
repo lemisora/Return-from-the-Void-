@@ -55,24 +55,13 @@ public class Nivel1 extends JFrame implements Runnable{
         canvas.setBackground(Color.black);
         canvas.setFocusable(true);
 
-//        add(canvas);                                        //Adicion del canvas al JFrame
+        add(canvas);                                        //Adicion del canvas al JFrame
         canvas.addKeyListener(keyboard);                    //Se adhiere el Teclado (KeyListener) al Canvas
-        add(canvas);
 
     }
     public static void main(String[] args) {
-<<<<<<< HEAD:Nivel1.java
-<<<<<<< HEAD:Nivel1.java
         //Aqui se ejecuta la ventana del juego
         Nivel1 juego = new Nivel1();
-=======
-        //Aquí se ejecuta la ventana del juego
-        MainJuego juego = new MainJuego();
->>>>>>> parent of f28bda5 (Se eliminan clases de StartWindow, JImages, etc):MainJuego.java
-=======
-        //Aquí se ejecuta la ventana del juego
-        MainJuego juego = new MainJuego();
->>>>>>> parent of f28bda5 (Se eliminan clases de StartWindow, JImages, etc):MainJuego.java
         juego.start();
     }
 
