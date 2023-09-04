@@ -56,16 +56,15 @@ public class MainJuego extends JFrame implements Runnable{
         canvas.setBackground(Color.black);
         canvas.setFocusable(true);
 
-//        add(canvas);                                        //Adicion del canvas al JFrame
+        add(canvas);                                        //Adicion del canvas al JFrame
         canvas.addKeyListener(keyboard);                    //Se adhiere el Teclado (KeyListener) al Canvas
-        add(canvas);
 
     }
-    public static void main(String[] args) {
-        //Aquí se ejecuta la ventana del juego
-        MainJuego juego = new MainJuego();
-        juego.start();
-    }
+//    public static void main(String[] args) {
+//        //Aquí se ejecuta la ventana del juego
+//        MainJuego juego = new MainJuego();
+//        juego.start();
+//    }
 
     private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
         Assets.init();
