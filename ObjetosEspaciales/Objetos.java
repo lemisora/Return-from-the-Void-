@@ -1,12 +1,13 @@
 package ObjetosEspaciales;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 public abstract class Objetos{
   //Variables que representan las caracteristicas de los objetos espaciales
   protected int Velocidad;
   protected int posX; //Coordenadas verticales del objeto
   protected int posY; //Coordenadas horizontales del objeto
   protected Random aleatorio = new Random(); //Se crea el objeto que lanza numeros aleatorios
-
   public Objetos(int sp, int x, int y){ //Constructor de los objetos
      this.Velocidad = sp;
      this.posX = x;
@@ -14,7 +15,7 @@ public abstract class Objetos{
   }
 
   public abstract void moveY();
-  public abstract void generaPosicion();
+  public abstract void generaPosicion(int x, int y);
   public abstract void update();
 
   //Getters y setters
@@ -23,19 +24,14 @@ public abstract class Objetos{
     this.Velocidad = aleatorio.nextInt(5000)+30;
   }
 
-  public int setposY(int y){
+  public int setposY(){
     int avanzaY = 0;
     if(this.Velocidad >= 30 && this.Velocidad < 1000){
       avanzaY = 1;
     }else if(this.Velocidad >= 1000 && this.Velocidad < 2000){
       avanzaY = 2;
-    }else if(this.Velocidad >= 2000 && this.Velocidad < 3000){
-      avanzaY = 3;
-    }else if(this.Velocidad >= 3000 && this.Velocidad < 4000){
-      avanzaY = 4;
-    }else if(this.Velocidad >= 4000 && this.Velocidad < 5000){
-      avanzaY = 5;
-    }
+    }else if(this.Velocidad >= 2000 && this.Velocidad < 5000){
+      avanzaY = 4;}
     return avanzaY;
   }
 
@@ -53,5 +49,6 @@ public abstract class Objetos{
   public int getposY(){
     return posY;
   }
+  // Clase interna que representa la tarea que se ejecutará después del retraso
 
 } 

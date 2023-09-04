@@ -11,8 +11,8 @@ public class Assets {
         fuenteFPS = Loader.loadFont("../Resource/Fonts/HeavyDataNerdFont-Regular.ttf",18);
         fuenteInterfaz = Loader.loadFont("../Resource/Fonts/ProFontIIxNerdFontMono-Regular.ttf",20);
         nave = Loader.ImageLoader("../ObjetosEspaciales/Nave/player.png");
-        planetaVivo = Loader.ImageLoader("../ObjetosEspaciales/Planeta/Vivo.png");
-        planetaMuerto = Loader.ImageLoader("../ObjetosEspaciales/Planeta/NoVivo.png");
+        planetaVivo = Loader.ImageLoader("../ObjetosEspaciales/Planeta/vivo.png");
+        planetaMuerto = Loader.ImageLoader("../ObjetosEspaciales/Planeta/planeta_no_vivo.png");
         asteroides = new BufferedImage[3];
 
         for(int i = 0; i < 3; i++){

@@ -1,27 +1,48 @@
 package ObjetosEspaciales;
-public class PlanetaVivo extends Objetos{
-  public PlanetaVivo(int sp, int x, int y){ //Constructor de la clase Planeta
-    super(sp,x,y);
-    this.posX = aleatorio.nextInt(x)+1;
-    this.posY = aleatorio.nextInt(y)+1;
+public class PlanetaVivo extends Objetos {
+  private boolean tieneVida;
+  private boolean listo = false;
+  public PlanetaVivo(int sp, int x, int y) { //Constructor de la clase Planeta
+    super(sp, x, y);
+    generaPosicion(x, y);
+
+    int a = aleatorio.nextInt(2)+1;
+    if(a == 2){
+      this.tieneVida = true;
+    }else if(a == 1){
+      this.tieneVida = false;
+    }
+  }
+
+  public boolean isTieneVida() {
+    return tieneVida;
   }
 
   @Override
   public void moveY() {
     setVelocidad();
-    posY = posY + setposY(this.posY);
+    posY = posY + setposY();
   }
 
   @Override
-  public void generaPosicion() {
-    this.posX = 0;
-    this.posY = 0;
+  public void generaPosicion(int x, int y) {
+    this.posY = aleatorio.nextInt(y);
+
+    while(!listo){
+      if(this.posX <= 50 || this.posX >= x-50){
+        this.posX = aleatorio.nextInt(x) + 50;
+      }
+      if(this.posX > 50 && this.posX < x - 50) {
+        this.listo = true;
+      }
+    }
   }
 
   @Override
   public void update() {
     moveY();
   }
-
-
 }
+
+
+

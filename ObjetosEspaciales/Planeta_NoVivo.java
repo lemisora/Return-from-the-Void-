@@ -10,7 +10,7 @@ public class Planeta_NoVivo extends Objetos{
   }
 
   @Override
-  public void generaPosicion() {
+  public void generaPosicion(int x, int y) {
 
   }
 

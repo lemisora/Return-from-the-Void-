@@ -2,7 +2,7 @@
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import Model.Assets;
 import Model.Input.Teclado;
@@ -12,7 +12,9 @@ import java.util.Random;
 import ObjetosEspaciales.Nave.Nave;
 import ObjetosEspaciales.PlanetaVivo;
 
-public class MainJuego extends JFrame implements Runnable{  //Se crea una ventana de 1000 x 600
+public class MainJuego extends JFrame implements Runnable{
+
+    //Se crea una ventana de 1000 x 600
     private final int WIDTH = 1000, HEIGHT = 600;
     private Thread hiloVentana;                             //Se crea un hilo para el control del videojuego
     private Canvas canvas;                                  //Se define un Canvas para el dibujado de los elementos del juego en la ventana
@@ -43,26 +45,32 @@ public class MainJuego extends JFrame implements Runnable{  //Se crea una ventan
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
-        canvas = new Canvas();                              //Se crea el canvas
+
+        canvas = new Canvas();
+
         //Preferencias para el Canvas
         canvas.setPreferredSize(new Dimension(WIDTH,HEIGHT));
         canvas.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         canvas.setMinimumSize(new Dimension(WIDTH,HEIGHT));
+        canvas.setBackground(Color.black);
         canvas.setFocusable(true);
 
-        add(canvas);                                        //Adicion del canvas al JFrame
+//        add(canvas);                                        //Adicion del canvas al JFrame
         canvas.addKeyListener(keyboard);                    //Se adhiere el Teclado (KeyListener) al Canvas
+        add(canvas);
+
     }
     public static void main(String[] args) {
         //Aquí se ejecuta la ventana del juego
-        new MainJuego().start();
+        MainJuego juego = new MainJuego();
+        juego.start();
     }
 
     private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
         Assets.init();
-        planetas = new PlanetaVivo[aleatorio.nextInt(5)+3];         //Se inicializa el arreglo de planetas
+        planetas = new PlanetaVivo[aleatorio.nextInt(6)+3];         //Se inicializa el arreglo de planetas
         for(i = 0 ; i < planetas.length ; i++){
-            planetas[i] = new PlanetaVivo(0,WIDTH, HEIGHT);
+            planetas[i] = new PlanetaVivo(0,WIDTH-50, HEIGHT/4);
         }
     }
     private void update(){
@@ -86,7 +94,12 @@ public class MainJuego extends JFrame implements Runnable{  //Se crea una ventan
 
         G.drawImage(Assets.nave,ship.getposX(),ship.getposY(),null);    //Se dibuja la nave en el centro del Canvas
         for(i = 0 ; i < planetas.length ; i++){
-            G.drawImage(Assets.planetaVivo,planetas[i].getposX(),planetas[i].getposY(),null);
+            if(planetas[i].isTieneVida() == true){
+                G.drawImage(Assets.planetaVivo,planetas[i].getposX(),planetas[i].getposY(),null);
+            } else if (planetas[i].isTieneVida() == false) {
+                G.drawImage(Assets.planetaMuerto,planetas[i].getposX(),planetas[i].getposY(),null);
+            }
+
         }
         G.setColor(Color.YELLOW);
         G.setFont(Assets.fuenteFPS);

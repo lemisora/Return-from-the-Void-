@@ -18,7 +18,7 @@ public class Nave extends Objetos{
   public void moveY() {}
 
   @Override
-  public void generaPosicion() {}
+  public void generaPosicion(int x, int y) {}
 
   @Override
   public void update() {

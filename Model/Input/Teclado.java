@@ -12,10 +12,6 @@ public class Teclado implements KeyListener {
         SPACE = false;
     }
 
-    public void update(){   //Función que actualiza el estado de presionado de las teclas
-
-    }
-
     @Override
     public void keyTyped(KeyEvent keyEvent) {}
 
