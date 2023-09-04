@@ -1,4 +1,7 @@
-package ObjetosEspaciales;
+package ObjetosEspaciales.Planeta;
+
+import ObjetosEspaciales.Objetos;
+
 public class Planetas extends Objetos {
   private boolean tieneVida;
   private boolean listo = false;

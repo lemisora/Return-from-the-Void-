@@ -10,16 +10,16 @@ import Model.Input.Teclado;
 
 import java.util.Random;
 
+import ObjetosEspaciales.Asteroides.Asteroide;
 import ObjetosEspaciales.Nave.Nave;
-import ObjetosEspaciales.Planetas;
 
-public class MainJuego extends JFrame implements Runnable{
+public class Nivel2 extends JFrame implements Runnable{
 
     //Se crea una ventana de 1000 x 600
     private final int WIDTH = 1000, HEIGHT = 600;
     private Thread hiloVentana;                             //Se crea un hilo para el control del videojuego
     private Canvas canvas;                                  //Se define un Canvas para el dibujado de los elementos del juego en la ventana
-    private boolean running = false;                        //Se establece un booleano que define el estado de ejecución
+    private boolean running = false;                        //Se establece un booleano que define el estado de ejecucion
 
     private BufferStrategy buffStrat;                       //Se crea un BufferStrategy para despues establecer un triplebuffer y mejorar el rendimiento
     private Graphics2D G;                                     //Objeto para el dibujado de elementos graficos
@@ -31,15 +31,15 @@ public class MainJuego extends JFrame implements Runnable{
 
     private Random aleatorio = new Random();
 
-    private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlarán los movimientos de la nave
+    private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlaran los movimientos de la nave
 
-    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-50);
-    private Planetas planetas[];
+    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-80);
+    private Asteroide asteroides[];
     private boolean moving = false;
 
     private int i = 0;
 
-    public MainJuego(){                                     //Se establecen propiedades para la ventana
+    public Nivel2(){                                     //Se establecen propiedades para la ventana
         setTitle("Return from the Void!");
         setSize(WIDTH,HEIGHT);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -61,28 +61,23 @@ public class MainJuego extends JFrame implements Runnable{
 
     }
     public static void main(String[] args) {
-        //Aquí se ejecuta la ventana del juego
-        MainJuego juego = new MainJuego();
+        //Aqui se ejecuta la ventana del juego
+        Nivel2 juego = new Nivel2();
         juego.start();
     }
 
     private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
         Assets.init();
-        planetas = new Planetas[aleatorio.nextInt(6)+3];         //Se inicializa el arreglo de planetas
-        for(i = 0 ; i < planetas.length ; i++){
-            planetas[i] = new Planetas(0,WIDTH-50, HEIGHT/4);
+        asteroides = new Asteroide[aleatorio.nextInt(6)+3];         //Se inicializa el arreglo de asteroides
+        for(i = 0 ; i < asteroides.length ; i++){
+            asteroides[i] = new Asteroide(0,WIDTH-50, HEIGHT/4);
         }
     }
     private void update(){
         ship.moveX(keyboard.isA(),keyboard.isD(),keyboard.isSPACE());
-        for(i = 0 ; i < planetas.length ; i++){
-            planetas[i].update();
-            if(planetas[i].isTieneVida() == true){
-                checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.planetaVivo, planetas[i].getposX(),planetas[i].getposY());
-            } else if (planetas[i].isTieneVida() == false) {
-                checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.planetaMuerto, planetas[i].getposX(),planetas[i].getposY());
-            }
-
+        for(i = 0 ; i < asteroides.length ; i++){
+            asteroides[i].update();
+                checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.asteroidImages[1], asteroides[i].getposX(),asteroides[i].getposY());
         }
     }
     private void draw(){
@@ -97,13 +92,8 @@ public class MainJuego extends JFrame implements Runnable{
         G.fillRect(0,0,WIDTH,HEIGHT);
 
         G.drawImage(Assets.nave,ship.getposX(),ship.getposY(),null);    //Se dibuja la nave en el centro del Canvas
-        for(i = 0 ; i < planetas.length ; i++){
-            if(planetas[i].isTieneVida() == true){
-                G.drawImage(Assets.planetaVivo,planetas[i].getposX(),planetas[i].getposY(),null);
-            } else if (planetas[i].isTieneVida() == false) {
-                G.drawImage(Assets.planetaMuerto,planetas[i].getposX(),planetas[i].getposY(),null);
-            }
-
+        for(i = 0 ; i < asteroides.length ; i++){
+            G.drawImage(Assets.asteroidImages[asteroides[i].getTipoAsteroide()], asteroides[i].getposX(),asteroides[i].getposY(),null);
         }
         G.setColor(Color.GREEN);
         G.setFont(Assets.fuenteFPS);
@@ -178,4 +168,3 @@ public class MainJuego extends JFrame implements Runnable{
         }
     }
 }
-
