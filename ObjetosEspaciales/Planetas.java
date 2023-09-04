@@ -1,8 +1,8 @@
 package ObjetosEspaciales;
-public class PlanetaVivo extends Objetos {
+public class Planetas extends Objetos {
   private boolean tieneVida;
   private boolean listo = false;
-  public PlanetaVivo(int sp, int x, int y) { //Constructor de la clase Planeta
+  public Planetas(int sp, int x, int y) { //Constructor de la clase Planeta
     super(sp, x, y);
     generaPosicion(x, y);
 

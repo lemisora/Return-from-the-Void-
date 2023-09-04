@@ -1,6 +1,7 @@
 //En este archivo va el ejecutable principal del juego en el que se conectaran todas las partes del mismo
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.*;
 
@@ -10,7 +11,7 @@ import Model.Input.Teclado;
 import java.util.Random;
 
 import ObjetosEspaciales.Nave.Nave;
-import ObjetosEspaciales.PlanetaVivo;
+import ObjetosEspaciales.Planetas;
 
 public class MainJuego extends JFrame implements Runnable{
 
@@ -33,7 +34,7 @@ public class MainJuego extends JFrame implements Runnable{
     private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlarán los movimientos de la nave
 
     private Nave ship = new Nave(0,WIDTH/2,HEIGHT-50);
-    private PlanetaVivo planetas[];
+    private Planetas planetas[];
     private boolean moving = false;
 
     private int i = 0;
@@ -68,29 +69,33 @@ public class MainJuego extends JFrame implements Runnable{
 
     private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
         Assets.init();
-        planetas = new PlanetaVivo[aleatorio.nextInt(6)+3];         //Se inicializa el arreglo de planetas
+        planetas = new Planetas[aleatorio.nextInt(6)+3];         //Se inicializa el arreglo de planetas
         for(i = 0 ; i < planetas.length ; i++){
-            planetas[i] = new PlanetaVivo(0,WIDTH-50, HEIGHT/4);
+            planetas[i] = new Planetas(0,WIDTH-50, HEIGHT/4);
         }
     }
     private void update(){
         ship.moveX(keyboard.isA(),keyboard.isD(),keyboard.isSPACE());
         for(i = 0 ; i < planetas.length ; i++){
             planetas[i].update();
+            if(planetas[i].isTieneVida() == true){
+                checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.planetaVivo, planetas[i].getposX(),planetas[i].getposY());
+            } else if (planetas[i].isTieneVida() == false) {
+                checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.planetaMuerto, planetas[i].getposX(),planetas[i].getposY());
+            }
+
         }
     }
-    public void draw(){
+    private void draw(){
         buffStrat = canvas.getBufferStrategy();
         if(buffStrat == null){
-            canvas.createBufferStrategy(3);   //Se crea el triple buffer para mejor rendimiento grafico
+            canvas.createBufferStrategy(2);   //Se crea el triple buffer para mejor rendimiento grafico
             return;
         }
         G = (Graphics2D)buffStrat.getDrawGraphics();
 
         G.setColor(Color.BLACK);                               //Se establece el color de fondo del Canvas como Negro
         G.fillRect(0,0,WIDTH,HEIGHT);
-
-
 
         G.drawImage(Assets.nave,ship.getposX(),ship.getposY(),null);    //Se dibuja la nave en el centro del Canvas
         for(i = 0 ; i < planetas.length ; i++){
@@ -101,13 +106,29 @@ public class MainJuego extends JFrame implements Runnable{
             }
 
         }
-        G.setColor(Color.YELLOW);
+        G.setColor(Color.GREEN);
         G.setFont(Assets.fuenteFPS);
         G.drawString("FPS : "+averagefps,10,20);
         G.dispose();
         buffStrat.show();                                      //Se muestran suavemente los objetos del juego con TripleBuffer
         Toolkit.getDefaultToolkit().sync();                    //Se activa la sincronizacion vertical, mejora el rendimiento con OpenGL en distribuciones de Linux y BSD
     }
+
+    private void checaColisiones(BufferedImage obj1, int x1, int y1, BufferedImage obj2, int x2, int y2){
+        int width1 = obj1.getWidth();
+        int height1 = obj1.getHeight();
+
+        int width2 = obj2.getWidth();
+        int height2 = obj2.getHeight();
+
+        int izq1 = x1; int der1 = x1 + width1; int top1 = y1; int bottom1 = y1 + height1;
+        int izq2 = x2; int der2 = x2 + width2; int top2 = y2; int bottom2 = y2 + height2;
+
+        if((der1 > izq2) && (izq1 < der2) && (bottom1 > top2) && (top1 < bottom2)){
+            System.out.println("Hubo colision!");
+        }
+    }
+
     @Override
     public void run() {
         long now = 0;

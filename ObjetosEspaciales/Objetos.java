@@ -1,7 +1,5 @@
 package ObjetosEspaciales;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 public abstract class Objetos{
   //Variables que representan las caracteristicas de los objetos espaciales
   protected int Velocidad;
@@ -40,15 +38,11 @@ public abstract class Objetos{
     return a;
   }
 
-  public int getVelocidad(){
-    return Velocidad;
-  }
   public int getposX() {
     return posX;
   }
   public int getposY(){
     return posY;
   }
-  // Clase interna que representa la tarea que se ejecutará después del retraso
 
 } 
