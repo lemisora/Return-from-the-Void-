@@ -83,7 +83,6 @@ public class Nivel1 extends JFrame implements Runnable{
 
     private void goToMenu(){
         this.setVisible(false);
-        this.stop();
         Menu menu = new Menu();
         menu.setVisible(true);
 
