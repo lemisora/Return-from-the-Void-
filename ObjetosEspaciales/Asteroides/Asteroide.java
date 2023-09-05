@@ -34,6 +34,6 @@ public class Asteroide extends Objetos {
     }
 
     public int getTipoAsteroide() {
-        return tipoAsteroide;
+        return tipoAsteroide-1;
     }
 }

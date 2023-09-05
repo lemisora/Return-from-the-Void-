@@ -13,7 +13,7 @@ import java.util.Random;
 import ObjetosEspaciales.Asteroides.Asteroide;
 import ObjetosEspaciales.Nave.Nave;
 
-public class Nivel2 extends JFrame implements Runnable{
+public class Nivel3 extends JFrame implements Runnable{
 
     //Se crea una ventana de 1000 x 600
     private final int WIDTH = 1000, HEIGHT = 600;
@@ -39,7 +39,7 @@ public class Nivel2 extends JFrame implements Runnable{
 
     private int i = 0;
 
-    public Nivel2(){                                     //Se establecen propiedades para la ventana
+    public Nivel3(){                                     //Se establecen propiedades para la ventana
         setTitle("Return from the Void!");
         setSize(WIDTH,HEIGHT);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

@@ -42,10 +42,10 @@ public class Menu extends JFrame{
         infoB.setBorderPainted(false);
 
         //Agregamos action listener a los botones
-        lev1B.addActionListener(e-> goToLevel(1));
-        lev2B.addActionListener(e-> goToLevel(2));
-        lev3B.addActionListener(e-> goToLevel(3));
-        infoB.addActionListener(e-> goToCredits());
+        lev1B.addActionListener(e -> goToLevel(1));
+        lev2B.addActionListener(e -> goToLevel(2));
+        lev3B.addActionListener(e -> goToLevel(3));
+        infoB.addActionListener(e -> goToCredits());
 
         //Posicionamos los botones
         lev1B.setBounds(300, 190, 390, 70);
@@ -66,14 +66,16 @@ public class Menu extends JFrame{
     //Funcion para cambiar de nivel
     private void goToLevel(int index){
         this.setVisible(false);
-        if(index==1){
+        if(index == 1){
             Nivel1 lvl1 = new Nivel1();
             lvl1.start();
             lvl1.setVisible(true);
         }
         if(index == 2){
-            System.out.println("ir al nivel 2");
-            this.setVisible(true);
+            Nivel2 lvl2 = new Nivel2();
+            lvl2.start();
+//            System.out.println("ir al nivel 2");
+            lvl2.setVisible(true);
         }
         if(index == 3){
             System.out.println("ir al nivel 3");
