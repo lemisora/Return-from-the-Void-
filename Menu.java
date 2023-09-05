@@ -74,7 +74,6 @@ public class Menu extends JFrame{
         if(index == 2){
             Nivel2 lvl2 = new Nivel2();
             lvl2.start();
-//            System.out.println("ir al nivel 2");
             lvl2.setVisible(true);
         }
         if(index == 3){
