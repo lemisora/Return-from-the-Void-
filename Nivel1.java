@@ -17,7 +17,9 @@ public class Nivel1 extends JFrame implements Runnable{
     //Se crea una ventana de 1000 x 600
     private final int WIDTH = 1000, HEIGHT = 600;
     private Thread hiloVentana;                             //Se crea un hilo para el control del videojuego
-    private Canvas canvas;                                  //Se define un Canvas para el dibujado de los elementos del juego en la ventana
+    private Canvas canvas;       
+    private JPanel panel;       
+    private JButton startB, returnB;                    //Se define un Canvas para el dibujado de los elementos del juego en la ventana
     private boolean running = false;                        //Se establece un booleano que define el estado de ejecucion
 
     private BufferStrategy buffStrat;                       //Se crea un BufferStrategy para despues establecer un triplebuffer y mejorar el rendimiento
@@ -32,21 +34,24 @@ public class Nivel1 extends JFrame implements Runnable{
 
     private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlaran los movimientos de la nave
 
-    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-80);
+    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-120);
     private Planetas planetas[];
     private boolean moving = false;
 
     private int i = 0;
 
-    public Nivel1(){                                     //Se establecen propiedades para la ventana
+    public Nivel1(){            
+                                 //Se establecen propiedades para la ventana
         setTitle("Return from the Void!");
         setSize(WIDTH,HEIGHT);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
-        setVisible(true);
 
+        panel = new JPanel();
         canvas = new Canvas();
+        startB = new JButton("Start");
+        returnB = new JButton("Retrun");
 
         //Preferencias para el Canvas
         canvas.setPreferredSize(new Dimension(WIDTH,HEIGHT));
@@ -54,15 +59,34 @@ public class Nivel1 extends JFrame implements Runnable{
         canvas.setMinimumSize(new Dimension(WIDTH,HEIGHT));
         canvas.setBackground(Color.black);
         canvas.setFocusable(true);
+        canvas.addKeyListener(keyboard); 
 
-        add(canvas);                                        //Adicion del canvas al JFrame
-        canvas.addKeyListener(keyboard);                    //Se adhiere el Teclado (KeyListener) al Canvas
+        //Configuracion del Panel
+        panel.setLayout(null);
+        panel.setBackground(Color.black);
+        //Agreagamos action listener a los botones
+        startB.addActionListener(e-> start());
+        returnB.addActionListener(e-> goToMenu());
+
+        //Agregamos componentes 
+        startB.setBounds(((WIDTH/2)-75), 0,150,30);
+        returnB.setBounds(WIDTH-160, 0, 150, 30);
+        canvas.setBounds(0, 30, WIDTH, HEIGHT);
+        
+        panel.add(canvas);
+        panel.add(startB);
+        panel.add(returnB);
+        add(panel);                                       
+        this.setVisible(true);                
 
     }
-    public static void main(String[] args) {
-        //Aqui se ejecuta la ventana del juego
-        Nivel1 juego = new Nivel1();
-        juego.start();
+
+    private void goToMenu(){
+        this.setVisible(false);
+        this.stop();
+        Menu menu = new Menu();
+        menu.setVisible(true);
+
     }
 
     private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
@@ -162,7 +186,7 @@ public class Nivel1 extends JFrame implements Runnable{
         }
         stop();
     }
-    private void start(){
+    public void start(){
         hiloVentana = new Thread(this);
         hiloVentana.start();
         running = true;
