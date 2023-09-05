@@ -6,7 +6,7 @@ import JImages.*;
 public class Menu extends JFrame{
     private final int WIDTH=1000, HEIGHT=600;
     JBackgroundPanel panel;
-    JButton lev1B, lev2B, lev3B;
+    JButton lev1B, lev2B, lev3B, infoB;
     BufferedImage backGroundPanel;
 
     public Menu(){
@@ -17,7 +17,7 @@ public class Menu extends JFrame{
         setLocationRelativeTo(null);
 
         //Creacion del panel
-        panel = new JBackgroundPanel();
+        panel = new JBackgroundPanel("Resource/Images/7.png");
         panel.setLayout(null);
 
         //Creacion de los botones
@@ -36,20 +36,28 @@ public class Menu extends JFrame{
         lev3B.setContentAreaFilled(false);
         lev3B.setBorderPainted(false);
 
+        infoB = new JButton();
+        infoB.setOpaque(true);
+        infoB.setContentAreaFilled(false);
+        infoB.setBorderPainted(false);
+
         //Agregamos action listener a los botones
         lev1B.addActionListener(e-> goToLevel(1));
         lev2B.addActionListener(e-> goToLevel(2));
         lev3B.addActionListener(e-> goToLevel(3));
+        infoB.addActionListener(e-> goToCredits());
 
         //Posicionamos los botones
         lev1B.setBounds(300, 190, 390, 70);
         lev2B.setBounds(300, 300, 390, 70);
         lev3B.setBounds(300, 410, 390, 70);
+        infoB.setBounds(900, 485, 50,50);
 
         //Agregamos los botones al panel
         panel.add(lev1B);
         panel.add(lev2B);
         panel.add(lev3B);
+        panel.add(infoB);
 
         add(panel);
         setVisible(true);
@@ -71,6 +79,13 @@ public class Menu extends JFrame{
             System.out.println("ir al nivel 3");
             this.setVisible(true);
         }
+    }
+
+    //Funcion para ir creditos
+    private void goToCredits(){
+        this.setVisible(false);
+        Creditos credito  = new Creditos();
+        credito.setVisible(true);
     }
 
     //MAIN INICIO DEL MENU DEL JUEGO
