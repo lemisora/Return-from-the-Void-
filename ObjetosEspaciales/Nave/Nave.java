@@ -4,13 +4,13 @@ import ObjetosEspaciales.Objetos;
 import java.awt.event.KeyEvent;
 
 public class Nave extends Objetos{
-  protected int Balas;
-  protected int Capsulas;
+  protected int vida;
   protected int posXin;
 
   private boolean A = false, D = false, SPACE = false;
-  public Nave(int sp, int x, int y){
+  public Nave(int sp, int x, int y, int life){
     super(sp,x,y);
+    this.vida = life;
     this.posXin = x*2;
   }
 
@@ -43,5 +43,11 @@ public class Nave extends Objetos{
     }
   }
 
+  public void restaVida(int menos){
+    this.vida -= menos;
+  }
 
+  public int getVida() {
+    return vida;
+  }
 }

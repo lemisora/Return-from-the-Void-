@@ -33,7 +33,7 @@ public class Nivel3 extends JFrame implements Runnable{
 
     private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlaran los movimientos de la nave
 
-    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-80);
+    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-80, 20000);
     private Asteroide asteroides[];
     private boolean moving = false;
 

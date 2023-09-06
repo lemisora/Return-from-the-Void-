@@ -5,6 +5,8 @@ import ObjetosEspaciales.Objetos;
 public class Planetas extends Objetos {
   private boolean tieneVida;
   private boolean listo = false;
+
+  private boolean dibujar = true;
   public Planetas(int sp, int x, int y) { //Constructor de la clase Planeta
     super(sp, x, y);
     generaPosicion(x, y);
@@ -44,6 +46,14 @@ public class Planetas extends Objetos {
   @Override
   public void update() {
     moveY();
+  }
+
+  public boolean isDibujar() {
+    return dibujar;
+  }
+
+  public void setDibujar(boolean dibujar) {
+    this.dibujar = dibujar;
   }
 }
 

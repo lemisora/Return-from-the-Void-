@@ -35,11 +35,12 @@ public class Nivel2 extends JFrame implements Runnable{
 
     private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlaran los movimientos de la nave
 
-    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-120);
+    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-120, 15000);
     private Asteroide asteroides[];
     private boolean moving = false;
 
     private int i = 0;
+    private int cuerposFuera = 1;
 
     public Nivel2(){                                     //Se establecen propiedades para la ventana
         setTitle("Return from the Void!");
@@ -52,7 +53,7 @@ public class Nivel2 extends JFrame implements Runnable{
         panel = new JPanel();
         canvas = new Canvas();
         startB = new JButton("Start");
-        returnB = new JButton("Retrun");
+        returnB = new JButton("Return");
 
         //
         //Configuracion del Panel
@@ -105,8 +106,14 @@ public class Nivel2 extends JFrame implements Runnable{
     private void update(){
         ship.moveX(keyboard.isA(),keyboard.isD(),keyboard.isSPACE());
         for(i = 0 ; i < asteroides.length ; i++){
-            asteroides[i].update();
-            checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.asteroidImages[asteroides[i].getTipoAsteroide()], asteroides[i].getposX(),asteroides[i].getposY());
+            if(asteroides[i].getposY() < HEIGHT){
+                asteroides[i].update();
+                checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.asteroidImages[asteroides[i].getTipoAsteroide()], asteroides[i].getposX(),asteroides[i].getposY());
+            }else if(asteroides[i].getposY() > HEIGHT && asteroides[i].isDibujar() == true){
+                asteroides[i].setDibujar(false);
+                cuerposFuera = cuerposFuera +1;
+            }
+//            System.out.println("Posición del asteroide no  ("+i+") -> "+asteroides[i].getposY());
         }
     }
     private void draw(){
@@ -120,6 +127,8 @@ public class Nivel2 extends JFrame implements Runnable{
         G.setColor(Color.BLACK);                               //Se establece el color de fondo del Canvas como Negro
         G.fillRect(0,0,WIDTH,HEIGHT);
 
+        G.drawImage(Assets.fuegoNave,ship.getposX()+15,ship.getposY()+Assets.fuegoNave.getHeight()-10,null);
+        G.drawImage(Assets.fuegoNave,ship.getposX()+20,ship.getposY()+Assets.fuegoNave.getHeight()-10,null);
         G.drawImage(Assets.nave,ship.getposX(),ship.getposY(),null);    //Se dibuja la nave en el centro del Canvas
         for(i = 0 ; i < asteroides.length ; i++){
             G.drawImage(Assets.asteroidImages[asteroides[i].getTipoAsteroide()], asteroides[i].getposX(),asteroides[i].getposY(),null);
@@ -127,9 +136,13 @@ public class Nivel2 extends JFrame implements Runnable{
         G.setColor(Color.GREEN);
         G.setFont(Assets.fuenteFPS);
         G.drawString("FPS : "+averagefps,10,20);
+        G.setColor(Color.YELLOW);
+        G.setFont(Assets.fuenteInterfaz);
+        G.drawString("Vida : "+ship.getVida(),4*(WIDTH)/5,20);
         G.dispose();
         buffStrat.show();                                      //Se muestran suavemente los objetos del juego con TripleBuffer
         Toolkit.getDefaultToolkit().sync();                    //Se activa la sincronizacion vertical, mejora el rendimiento con OpenGL en distribuciones de Linux y BSD
+
     }
 
     private void checaColisiones(BufferedImage obj1, int x1, int y1, BufferedImage obj2, int x2, int y2){
@@ -143,7 +156,7 @@ public class Nivel2 extends JFrame implements Runnable{
         int izq2 = x2; int der2 = x2 + width2; int top2 = y2; int bottom2 = y2 + height2;
 
         if((der1 > izq2) && (izq1 < der2) && (bottom1 > top2) && (top1 < bottom2)){
-            System.out.println("Hubo colision!");
+            ship.restaVida(200);
         }
     }
 
@@ -179,8 +192,10 @@ public class Nivel2 extends JFrame implements Runnable{
                 frames = 0;
                 time = 0;
             }
+            if(cuerposFuera == asteroides.length || ship.getVida() == 0){
+                stop();
+            }
         }
-        stop();
     }
     public void start(){
         hiloVentana = new Thread(this);
