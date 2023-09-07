@@ -70,7 +70,7 @@ public class Nivel1 extends JFrame implements Runnable{
         panel.setBackground(Color.black);
         panel.setSize(WIDTH, HEIGHT+60);
 
-        //Diseño de botones
+        //Disenio de botones
         
         startB.setOpaque(true);
         startB.setContentAreaFilled(false);

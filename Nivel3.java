@@ -63,7 +63,7 @@ public class Nivel3 extends JFrame implements Runnable{
         panel.setBackground(Color.black);
         panel.setSize(WIDTH, HEIGHT+60);
 
-        //Diseño de botones
+        //Disenio de botones
         startB.setOpaque(true);
         startB.setContentAreaFilled(false);
         startB.setBorderPainted(false);
@@ -112,7 +112,7 @@ public class Nivel3 extends JFrame implements Runnable{
         }
     }
     private void update(){
-//        System.out.println("Cuerpos fuera de órbita -> "+cuerposFuera + "\tVeces de redibujado -> "+redibujados);
+//        System.out.println("Cuerpos fuera de orbita -> "+cuerposFuera + "\tVeces de redibujado -> "+redibujados);
         ship.moveX(keyboard.isA(),keyboard.isD(),keyboard.isSPACE());
         if(cuerposFuera >= asteroides.length){
             vecesRedibujado++;
