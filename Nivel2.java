@@ -23,7 +23,6 @@ public class Nivel2 extends JFrame implements Runnable{
     private JButton startB, returnB;  
     private boolean running = false;                        //Se establece un booleano que define el estado de ejecucion
 
-    private BufferStrategy buffStrat;                       //Se crea un BufferStrategy para despues establecer un triplebuffer y mejorar el rendimiento
     private Graphics2D G;                                     //Objeto para el dibujado de elementos graficos
 
     private final int FPS = 60;                             //Limitacion de cuadros en ventana
@@ -31,16 +30,16 @@ public class Nivel2 extends JFrame implements Runnable{
     private double delta = 0;                               //Diferencia de tiempo
     private int averagefps = FPS;                          //Cuadros promedio
 
-    private Random aleatorio = new Random();
-
+    private final Random aleatorio = new Random();
     private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlaran los movimientos de la nave
 
-    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-120, 15000);
-    private Asteroide asteroides[];
-    private boolean moving = false;
+    private Nave ship;
+    private Asteroide[] asteroides;
 
     private int i = 0;
+    private int redibujados, vecesRedibujado = 0;
     private int cuerposFuera = 1;
+
 
     public Nivel2(){                                     //Se establecen propiedades para la ventana
         setTitle("Return from the Void!");
@@ -97,6 +96,9 @@ public class Nivel2 extends JFrame implements Runnable{
     }
 
     private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
+        final int vidaMaxima = 20000;
+        redibujados = aleatorio.nextInt(6)+3;
+        ship = new Nave(0,WIDTH/2,HEIGHT-120, vidaMaxima);
         Assets.init();
         asteroides = new Asteroide[aleatorio.nextInt(5)+3];         //Se inicializa el arreglo de asteroides
         for(i = 0 ; i < asteroides.length ; i++){
@@ -104,25 +106,35 @@ public class Nivel2 extends JFrame implements Runnable{
         }
     }
     private void update(){
+        System.out.println("Cuerpos fuera de órbita -> "+cuerposFuera + "\tVeces de redibujado -> "+redibujados);
         ship.moveX(keyboard.isA(),keyboard.isD(),keyboard.isSPACE());
+        if(cuerposFuera >= asteroides.length){
+            vecesRedibujado++;
+            asteroides = new Asteroide[aleatorio.nextInt(5)+3];
+            for(i = 0; i < asteroides.length; i++){
+                asteroides[i] = new Asteroide(0,WIDTH-50, HEIGHT/4);
+            }
+            cuerposFuera = 0;
+        }
         for(i = 0 ; i < asteroides.length ; i++){
             if(asteroides[i].getposY() < HEIGHT){
                 asteroides[i].update();
                 checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.asteroidImages[asteroides[i].getTipoAsteroide()], asteroides[i].getposX(),asteroides[i].getposY());
-            }else if(asteroides[i].getposY() > HEIGHT && asteroides[i].isDibujar() == true){
+            }else if(asteroides[i].getposY() > HEIGHT){
                 asteroides[i].setDibujar(false);
-                cuerposFuera = cuerposFuera +1;
+                cuerposFuera++;
             }
-//            System.out.println("Posición del asteroide no  ("+i+") -> "+asteroides[i].getposY());
+//            System.out.println("Posicion del asteroide no  ("+i+") -> "+asteroides[i].getposY());
         }
     }
     private void draw(){
-        buffStrat = canvas.getBufferStrategy();
+        //Se crea un BufferStrategy para despues establecer un triplebuffer y mejorar el rendimiento
+        BufferStrategy buffStrat = canvas.getBufferStrategy();
         if(buffStrat == null){
             canvas.createBufferStrategy(2);   //Se crea el triple buffer para mejor rendimiento grafico
             return;
         }
-        G = (Graphics2D)buffStrat.getDrawGraphics();
+        G = (Graphics2D) buffStrat.getDrawGraphics();
 
         G.setColor(Color.BLACK);                               //Se establece el color de fondo del Canvas como Negro
         G.fillRect(0,0,WIDTH,HEIGHT);
@@ -138,7 +150,7 @@ public class Nivel2 extends JFrame implements Runnable{
         G.drawString("FPS : "+averagefps,10,20);
         G.setColor(Color.YELLOW);
         G.setFont(Assets.fuenteInterfaz);
-        G.drawString("Vida : "+ship.getVida(),4*(WIDTH)/5,20);
+        G.drawString("Vida : "+ship.getVida(),17*(WIDTH)/20,20);
         G.dispose();
         buffStrat.show();                                      //Se muestran suavemente los objetos del juego con TripleBuffer
         Toolkit.getDefaultToolkit().sync();                    //Se activa la sincronizacion vertical, mejora el rendimiento con OpenGL en distribuciones de Linux y BSD
@@ -192,7 +204,7 @@ public class Nivel2 extends JFrame implements Runnable{
                 frames = 0;
                 time = 0;
             }
-            if(cuerposFuera == asteroides.length || ship.getVida() == 0){
+            if(vecesRedibujado == redibujados || ship.getVida() == 0){
                 stop();
             }
         }
@@ -200,6 +212,7 @@ public class Nivel2 extends JFrame implements Runnable{
     public void start(){
         hiloVentana = new Thread(this);
         hiloVentana.start();
+        cuerposFuera = 0;
         running = true;
     }
 

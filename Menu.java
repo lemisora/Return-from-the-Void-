@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import JImages.*;
 
 public class Menu extends JFrame{
-    private final int WIDTH=1000, HEIGHT=600;
+    private final int WIDTH = 1000, HEIGHT = 600;
     JBackgroundPanel panel;
     JButton lev1B, lev2B, lev3B, infoB;
     BufferedImage backGroundPanel;
