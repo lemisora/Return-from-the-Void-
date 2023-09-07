@@ -26,7 +26,7 @@ public class Nivel2 extends JFrame implements Runnable{
 
     private Graphics2D G;                                     //Objeto para el dibujado de elementos graficos
 
-    private final int FPS = 120;                             //Limitacion de cuadros en ventana
+    private final int FPS = 90;                             //Limitacion de cuadros en ventana
     private double TARGETTIME = 1000000000/FPS;             //Tiempo objetivo para obtener un cuadro de los 40 por segundo
     private double delta = 0;                               //Diferencia de tiempo
     private int averagefps = FPS;                          //Cuadros promedio
