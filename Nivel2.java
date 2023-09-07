@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.*;
 
+import JImages.JBackgroundPanel;
 import Model.Assets;
 import Model.Input.Teclado;
 
@@ -19,7 +20,7 @@ public class Nivel2 extends JFrame implements Runnable{
     private final int WIDTH = 1000, HEIGHT = 600;
     private Thread hiloVentana;                             //Se crea un hilo para el control del videojuego
     private Canvas canvas;                                  //Se define un Canvas para el dibujado de los elementos del juego en la ventana
-    private JPanel panel;       
+    private JBackgroundPanel panel;       
     private JButton startB, returnB;  
     private boolean running = false;                        //Se establece un booleano que define el estado de ejecucion
 
@@ -43,21 +44,30 @@ public class Nivel2 extends JFrame implements Runnable{
 
     public Nivel2(){                                     //Se establecen propiedades para la ventana
         setTitle("Return from the Void!");
-        setSize(WIDTH,HEIGHT);
+        setSize(WIDTH,HEIGHT+60);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
 
-        panel = new JPanel();
+        panel = new JBackgroundPanel("Resource/Images/lvl.png");
         canvas = new Canvas();
-        startB = new JButton("Start");
-        returnB = new JButton("Return");
+        startB = new JButton();
+        returnB = new JButton();
 
-        //
         //Configuracion del Panel
         panel.setLayout(null);
         panel.setBackground(Color.black);
+        panel.setSize(WIDTH, HEIGHT+60);
+
+        //Diseño de botones       
+        startB.setOpaque(true);
+        startB.setContentAreaFilled(false);
+        startB.setBorderPainted(false);
+        returnB.setOpaque(true);
+        returnB.setContentAreaFilled(false);
+        returnB.setBorderPainted(false);
+
         //Agreagamos action listener a los botones
         startB.addActionListener(e-> start());
         returnB.addActionListener(e-> goToMenu());
@@ -69,10 +79,10 @@ public class Nivel2 extends JFrame implements Runnable{
         canvas.setBackground(Color.black);
         canvas.setFocusable(true);
 
-        //Agregamos componentes 
-        startB.setBounds(((WIDTH/2)-75), 0,150,30);
-        returnB.setBounds(WIDTH-160, 0, 150, 30);
-        canvas.setBounds(0, 30, WIDTH, HEIGHT);
+        ///Agregamos componentes 
+        startB.setBounds(((WIDTH/2)-50), HEIGHT-5,80,30);
+        returnB.setBounds(2, HEIGHT-5, 85, 30);
+        canvas.setBounds(0, 0, WIDTH, HEIGHT);
         
         panel.add(canvas);
         panel.add(startB);
@@ -98,7 +108,7 @@ public class Nivel2 extends JFrame implements Runnable{
     private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
         final int vidaMaxima = 20000;
         redibujados = aleatorio.nextInt(6)+3;
-        ship = new Nave(0,WIDTH/2,HEIGHT-120, vidaMaxima);
+        ship = new Nave(0,WIDTH/2-30,HEIGHT-80, vidaMaxima);
         Assets.init();
         asteroides = new Asteroide[aleatorio.nextInt(5)+3];         //Se inicializa el arreglo de asteroides
         for(i = 0 ; i < asteroides.length ; i++){
