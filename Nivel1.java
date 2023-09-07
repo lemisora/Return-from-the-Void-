@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.*;
 
+import JImages.JBackgroundPanel;
 import Model.Assets;
 import Model.Input.Teclado;
 
@@ -18,7 +19,7 @@ public class Nivel1 extends JFrame implements Runnable{
     private final int WIDTH = 1000, HEIGHT = 600;
     private Thread hiloVentana;                             //Se crea un hilo para el control del videojuego
     private Canvas canvas;       
-    private JPanel panel;       
+    private JBackgroundPanel panel;       
     private JButton startB, returnB;                    //Se define un Canvas para el dibujado de los elementos del juego en la ventana
     private boolean running = false;                        //Se establece un booleano que define el estado de ejecucion
 
@@ -34,7 +35,7 @@ public class Nivel1 extends JFrame implements Runnable{
 
     private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlaran los movimientos de la nave
 
-    private Nave ship = new Nave(0,WIDTH/2,HEIGHT-120, 10000);
+    private Nave ship = new Nave(0,WIDTH/2-30,HEIGHT-80, 10000);
     private Planetas planetas[];
     private boolean moving = false;
 
@@ -45,15 +46,15 @@ public class Nivel1 extends JFrame implements Runnable{
     public Nivel1(){            
                                  //Se establecen propiedades para la ventana
         setTitle("Return from the Void!");
-        setSize(WIDTH,HEIGHT);
+        setSize(WIDTH,HEIGHT+60);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
 
-        panel = new JPanel();
+        panel = new JBackgroundPanel("Resource/Images/lvl.png");
         canvas = new Canvas();
-        startB = new JButton("Start");
-        returnB = new JButton("Return");
+        startB = new JButton();
+        returnB = new JButton();
 
         //Preferencias para el Canvas
         canvas.setPreferredSize(new Dimension(WIDTH,HEIGHT));
@@ -66,14 +67,25 @@ public class Nivel1 extends JFrame implements Runnable{
         //Configuracion del Panel
         panel.setLayout(null);
         panel.setBackground(Color.black);
+        panel.setSize(WIDTH, HEIGHT+60);
+
+        //Diseño de botones
+        
+        startB.setOpaque(true);
+        startB.setContentAreaFilled(false);
+        startB.setBorderPainted(false);
+        returnB.setOpaque(true);
+        returnB.setContentAreaFilled(false);
+        returnB.setBorderPainted(false);
+
         //Agreagamos action listener a los botones
         startB.addActionListener(e-> start());
         returnB.addActionListener(e-> goToMenu());
 
         //Agregamos componentes 
-        startB.setBounds(((WIDTH/2)-75), 0,150,30);
-        returnB.setBounds(WIDTH-160, 0, 150, 30);
-        canvas.setBounds(0, 30, WIDTH, HEIGHT);
+        startB.setBounds(((WIDTH/2)-50), HEIGHT-5,80,30);
+        returnB.setBounds(2, HEIGHT-5, 85, 30);
+        canvas.setBounds(0, 0, WIDTH, HEIGHT);
         
         panel.add(canvas);
         panel.add(startB);
@@ -204,6 +216,9 @@ public class Nivel1 extends JFrame implements Runnable{
                 time = 0;
             }
             if(cuerposFuera == planetas.length || ship.getVida() == 0){
+                this.setVisible(false);
+                LoseWindow lw = new LoseWindow();
+                lw.setVisible(true);
                 stop();
             }
         }

@@ -17,7 +17,7 @@ public class Menu extends JFrame{
         setLocationRelativeTo(null);
 
         //Creacion del panel
-        panel = new JBackgroundPanel("Resource/Images/7.png");
+        panel = new JBackgroundPanel("Resource/Images/background.png");
         panel.setLayout(null);
 
         //Creacion de los botones
