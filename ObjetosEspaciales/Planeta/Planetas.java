@@ -34,7 +34,7 @@ public class Planetas extends Objetos {
     this.posY = aleatorio.nextInt(y);
 
     while(!listo){
-      if(this.posX <= 50 || this.posX >= x-50){
+      if(this.posX <= 30 || this.posX >= x-30){
         this.posX = aleatorio.nextInt(x) + 50;
       }
       if(this.posX > 50 && this.posX < x - 50) {

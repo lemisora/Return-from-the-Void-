@@ -28,8 +28,14 @@ public abstract class Objetos{
       avanzaY = 1;
     }else if(this.Velocidad >= 1000 && this.Velocidad < 2000){
       avanzaY = 2;
-    }else if(this.Velocidad >= 2000 && this.Velocidad < 5000){
-      avanzaY = 4;}
+    }else if(this.Velocidad >= 2000 && this.Velocidad < 3000){
+      avanzaY = 3;
+    } else if (this.Velocidad >= 3000 && this.Velocidad < 4000) {
+      avanzaY = 4;
+    } else if(this.Velocidad >= 4000 && this.Velocidad < 5000){
+      avanzaY = 5;
+    }
+
     return avanzaY;
   }
 

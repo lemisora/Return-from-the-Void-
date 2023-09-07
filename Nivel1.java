@@ -23,7 +23,6 @@ public class Nivel1 extends JFrame implements Runnable{
     private JButton startB, returnB;                    //Se define un Canvas para el dibujado de los elementos del juego en la ventana
     private boolean running = false;                        //Se establece un booleano que define el estado de ejecucion
 
-    private BufferStrategy buffStrat;                       //Se crea un BufferStrategy para despues establecer un triplebuffer y mejorar el rendimiento
     private Graphics2D G;                                     //Objeto para el dibujado de elementos graficos
 
     private final int FPS = 60;                             //Limitacion de cuadros en ventana
@@ -35,13 +34,15 @@ public class Nivel1 extends JFrame implements Runnable{
 
     private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlaran los movimientos de la nave
 
-    private Nave ship = new Nave(0,WIDTH/2-30,HEIGHT-80, 10000);
+    private Nave ship;
     private Planetas planetas[];
     private boolean moving = false;
 
     private int i = 0;
+    private int redibujados, vecesRedibujado = 0;
+    private int cuerposFuera = 0;
 
-    private int cuerposFuera = 1;
+    private boolean nivelGanado = false;
 
     public Nivel1(){            
                                  //Se establecen propiedades para la ventana
@@ -103,18 +104,29 @@ public class Nivel1 extends JFrame implements Runnable{
     }
 
     private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
+        final int vidaMaxima = 10000;
+        redibujados = aleatorio.nextInt(10)+5;
+        ship = new Nave(0,WIDTH/2-30,HEIGHT-80, vidaMaxima);
         Assets.init();
-        planetas = new Planetas[aleatorio.nextInt(6)+3];         //Se inicializa el arreglo de planetas
+        planetas = new Planetas[aleatorio.nextInt(5)+3];         //Se inicializa el arreglo de planetas
         for(i = 0 ; i < planetas.length ; i++){
             planetas[i] = new Planetas(0,WIDTH-50, HEIGHT/4);
         }
     }
     private void update(){
         ship.moveX(keyboard.isA(),keyboard.isD(),keyboard.isSPACE());
+        if(cuerposFuera >= planetas.length){
+            vecesRedibujado++;
+            planetas = new Planetas[aleatorio.nextInt(8)+5];         //Se inicializa el arreglo de planetas
+            for(i = 0 ; i < planetas.length ; i++){
+                planetas[i] = new Planetas(0,WIDTH-50, HEIGHT/4);
+            }
+            cuerposFuera = 0;
+        }
         for(i = 0 ; i < planetas.length ; i++){
             if(planetas[i].getposY() < HEIGHT){
                 planetas[i].update();
-                System.out.println(""+planetas[i].getposY());
+//                System.out.println(""+planetas[i].getposY());
 
                 if(planetas[i].isTieneVida() == true){
                     checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.planetaVivo, planetas[i].getposX(),planetas[i].getposY(), planetas[i].isTieneVida());
@@ -122,21 +134,18 @@ public class Nivel1 extends JFrame implements Runnable{
                     checaColisiones(Assets.nave, ship.getposX(),ship.getposY(),Assets.planetaMuerto, planetas[i].getposX(),planetas[i].getposY(), planetas[i].isTieneVida());
                 }
 
-            }else if(planetas[i].getposY() > HEIGHT && planetas[i].isDibujar()){
-                planetas[i].setDibujar(false);
+            }else if(planetas[i].getposY() > HEIGHT)
                 cuerposFuera++;
-            }
-
-
         }
     }
     private void draw(){
-        buffStrat = canvas.getBufferStrategy();
+        //Se crea un BufferStrategy para despues establecer un triplebuffer y mejorar el rendimiento
+        BufferStrategy buffStrat = canvas.getBufferStrategy();
         if(buffStrat == null){
-            canvas.createBufferStrategy(2);   //Se crea el triple buffer para mejor rendimiento grafico
+            canvas.createBufferStrategy(3);   //Se crea el triple buffer para mejor rendimiento grafico
             return;
         }
-        G = (Graphics2D)buffStrat.getDrawGraphics();
+        G = (Graphics2D) buffStrat.getDrawGraphics();
 
         G.setColor(Color.BLACK);                               //Se establece el color de fondo del Canvas como Negro
         G.fillRect(0,0,WIDTH,HEIGHT);
@@ -145,20 +154,22 @@ public class Nivel1 extends JFrame implements Runnable{
         G.drawImage(Assets.fuegoNave,ship.getposX()+15,ship.getposY()+Assets.fuegoNave.getHeight()-10,null);
         G.drawImage(Assets.fuegoNave,ship.getposX()+20,ship.getposY()+Assets.fuegoNave.getHeight()-10,null);
         G.drawImage(Assets.nave,ship.getposX(),ship.getposY(),null);    //Se dibuja la nave en el centro del Canvas
-        for(i = 0 ; i < planetas.length ; i++){
-            if(planetas[i].isTieneVida() == true){
-                G.drawImage(Assets.planetaVivo,planetas[i].getposX(),planetas[i].getposY(),null);
-            } else if (planetas[i].isTieneVida() == false) {
-                G.drawImage(Assets.planetaMuerto,planetas[i].getposX(),planetas[i].getposY(),null);
-            }
 
+        if(vecesRedibujado < redibujados){
+            for(i = 0 ; i < planetas.length ; i++){
+                if(planetas[i].isTieneVida()){
+                    G.drawImage(Assets.planetaVivo,planetas[i].getposX(),planetas[i].getposY(),null);
+                } else {
+                    G.drawImage(Assets.planetaMuerto,planetas[i].getposX(),planetas[i].getposY(),null);
+                }
+            }
         }
+
         G.setColor(Color.GREEN);
         G.setFont(Assets.fuenteFPS);
         G.drawString("FPS : "+averagefps,10,20);
         G.setColor(Color.YELLOW);
-        G.setFont(Assets.fuenteInterfaz);
-        G.drawString("Vida : "+ship.getVida(),4*(WIDTH)/5,20);
+        G.drawString("Vida : "+ship.getVida(),17*(WIDTH)/20,20);
         G.dispose();
         buffStrat.show();                                      //Se muestran suavemente los objetos del juego con TripleBuffer
         Toolkit.getDefaultToolkit().sync();                    //Se activa la sincronizacion vertical, mejora el rendimiento con OpenGL en distribuciones de Linux y BSD
@@ -176,7 +187,7 @@ public class Nivel1 extends JFrame implements Runnable{
 
         if((der1 > izq2) && (izq1 < der2) && (bottom1 > top2) && (top1 < bottom2)){
             if(vida){
-                stop();
+                ship.setVida(0);
             }else{
                 ship.restaVida(150);
             }
@@ -215,16 +226,24 @@ public class Nivel1 extends JFrame implements Runnable{
                 frames = 0;
                 time = 0;
             }
-            if(cuerposFuera == planetas.length || ship.getVida() == 0){
-                this.setVisible(false);
-                LoseWindow lw = new LoseWindow();
-                lw.setVisible(true);
-                stop();
+            if(vecesRedibujado >= redibujados || ship.getVida() == 0){
+                if(ship.getVida() <= 0){
+                    this.nivelGanado = false;
+                    this.setVisible(false);
+                    LoseWindow lw = new LoseWindow();
+                    lw.setVisible(true);
+                    stop();
+                }else if(!this.isVisible()){
+                    stop();
+                }
             }
         }
     }
     public void start(){
         hiloVentana = new Thread(this);
+        cuerposFuera = 0;
+        vecesRedibujado = 0;
+        redibujados = 0;
         hiloVentana.start();
         running = true;
     }

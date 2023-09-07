@@ -17,7 +17,7 @@ public class Menu extends JFrame{
         setLocationRelativeTo(null);
 
         //Creacion del panel
-        panel = new JBackgroundPanel("Resource/Images/background.png");
+        panel = new JBackgroundPanel("Resource/Images/Background.png");
         panel.setLayout(null);
 
         //Creacion de los botones
@@ -65,20 +65,21 @@ public class Menu extends JFrame{
 
     //Funcion para cambiar de nivel
     private void goToLevel(int index){
-        this.setVisible(false);
+
         if(index == 1){
             Nivel1 lvl1 = new Nivel1();
-            lvl1.start();
+            this.setVisible(false);
             lvl1.setVisible(true);
         }
         if(index == 2){
             Nivel2 lvl2 = new Nivel2();
-            lvl2.start();
+            this.setVisible(false);
             lvl2.setVisible(true);
         }
         if(index == 3){
-            System.out.println("ir al nivel 3");
-            this.setVisible(true);
+            Nivel3 lvl3 = new Nivel3();
+            this.setVisible(false);
+            lvl3.setVisible(true);
         }
     }
 

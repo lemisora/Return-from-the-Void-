@@ -47,6 +47,10 @@ public class Nave extends Objetos{
     this.vida -= menos;
   }
 
+  public void setVida(int vida) {
+    this.vida = vida;
+  }
+
   public int getVida() {
     return vida;
   }
