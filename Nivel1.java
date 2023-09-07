@@ -216,6 +216,9 @@ public class Nivel1 extends JFrame implements Runnable{
                 time = 0;
             }
             if(cuerposFuera == planetas.length || ship.getVida() == 0){
+                this.setVisible(false);
+                LoseWindow lw = new LoseWindow();
+                lw.setVisible(true);
                 stop();
             }
         }

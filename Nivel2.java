@@ -215,6 +215,9 @@ public class Nivel2 extends JFrame implements Runnable{
                 time = 0;
             }
             if(vecesRedibujado == redibujados || ship.getVida() == 0){
+                this.setVisible(false);
+                LoseWindow lw = new LoseWindow();
+                lw.setVisible(true);
                 stop();
             }
         }
