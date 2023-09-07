@@ -97,7 +97,7 @@ public class Nivel2 extends JFrame implements Runnable{
 
     private void init() throws IOException, FontFormatException {           //Metodo para la inicializacion de los elementos graficos del juego
         final int vidaMaxima = 20000;
-        redibujados = aleatorio.nextInt(6)+3;
+        redibujados = aleatorio.nextInt(6)+4;
         ship = new Nave(0,WIDTH/2,HEIGHT-120, vidaMaxima);
         Assets.init();
         asteroides = new Asteroide[aleatorio.nextInt(5)+3];         //Se inicializa el arreglo de asteroides
@@ -110,7 +110,7 @@ public class Nivel2 extends JFrame implements Runnable{
         ship.moveX(keyboard.isA(),keyboard.isD(),keyboard.isSPACE());
         if(cuerposFuera >= asteroides.length){
             vecesRedibujado++;
-            asteroides = new Asteroide[aleatorio.nextInt(5)+3];
+            asteroides = new Asteroide[aleatorio.nextInt(10)+5];
             for(i = 0; i < asteroides.length; i++){
                 asteroides[i] = new Asteroide(0,WIDTH-50, HEIGHT/4);
             }
@@ -142,15 +142,18 @@ public class Nivel2 extends JFrame implements Runnable{
         G.drawImage(Assets.fuegoNave,ship.getposX()+15,ship.getposY()+Assets.fuegoNave.getHeight()-10,null);
         G.drawImage(Assets.fuegoNave,ship.getposX()+20,ship.getposY()+Assets.fuegoNave.getHeight()-10,null);
         G.drawImage(Assets.nave,ship.getposX(),ship.getposY(),null);    //Se dibuja la nave en el centro del Canvas
-        for(i = 0 ; i < asteroides.length ; i++){
-            G.drawImage(Assets.asteroidImages[asteroides[i].getTipoAsteroide()], asteroides[i].getposX(),asteroides[i].getposY(),null);
+        if(vecesRedibujado != redibujados){
+            for(i = 0 ; i < asteroides.length ; i++){
+                G.drawImage(Assets.asteroidImages[asteroides[i].getTipoAsteroide()], asteroides[i].getposX(),asteroides[i].getposY(),null);
+            }
         }
+
         G.setColor(Color.GREEN);
         G.setFont(Assets.fuenteFPS);
         G.drawString("FPS : "+averagefps,10,20);
         G.setColor(Color.YELLOW);
         G.setFont(Assets.fuenteInterfaz);
-        G.drawString("Vida : "+ship.getVida(),17*(WIDTH)/20,20);
+        G.drawString("Vida : "+ship.getVida(),3*(WIDTH)/4,20);
         G.dispose();
         buffStrat.show();                                      //Se muestran suavemente los objetos del juego con TripleBuffer
         Toolkit.getDefaultToolkit().sync();                    //Se activa la sincronizacion vertical, mejora el rendimiento con OpenGL en distribuciones de Linux y BSD

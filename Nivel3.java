@@ -31,10 +31,10 @@ public class Nivel3 extends JFrame implements Runnable{
 
     private Random aleatorio = new Random();
 
-    private Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlaran los movimientos de la nave
+    private final Teclado keyboard =  new Teclado();              //Se crea un objeto Teclado de tipo KeyListener con el que se controlaran los movimientos de la nave
 
     private Nave ship = new Nave(0,WIDTH/2,HEIGHT-80, 20000);
-    private Asteroide asteroides[];
+    private Asteroide[] asteroides;
     private boolean moving = false;
 
     private int i = 0;
@@ -98,6 +98,9 @@ public class Nivel3 extends JFrame implements Runnable{
         G.setColor(Color.GREEN);
         G.setFont(Assets.fuenteFPS);
         G.drawString("FPS : "+averagefps,10,20);
+        G.setColor(Color.YELLOW);
+        G.setFont(Assets.fuenteInterfaz);
+        G.drawString(""+ship.getVida(),3*(WIDTH)/4, 20);
         G.dispose();
         buffStrat.show();                                      //Se muestran suavemente los objetos del juego con TripleBuffer
         Toolkit.getDefaultToolkit().sync();                    //Se activa la sincronizacion vertical, mejora el rendimiento con OpenGL en distribuciones de Linux y BSD
