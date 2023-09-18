@@ -26,7 +26,7 @@ public class Nivel3 extends JFrame implements Runnable{
 
     private Graphics2D G;                                     //Objeto para el dibujado de elementos graficos
 
-    private final int FPS = 90;                             //Limitacion de cuadros en ventana
+    private final int FPS = 144;                             //Limitacion de cuadros en ventana
     private double TARGETTIME = 1000000000/FPS;             //Tiempo objetivo para obtener un cuadro de los 40 por segundo
     private double delta = 0;                               //Diferencia de tiempo
     private int averagefps = FPS;                          //Cuadros promedio
@@ -83,8 +83,8 @@ public class Nivel3 extends JFrame implements Runnable{
         canvas.setFocusable(true);
 
         ///Agregamos componentes
-        startB.setBounds(((WIDTH/2)-50), HEIGHT-5,80,30);
-        returnB.setBounds(2, HEIGHT-5, 85, 30);
+        startB.setBounds(((WIDTH/2)-50), HEIGHT+10,80,30);
+        returnB.setBounds(2, HEIGHT+10, 85, 30);
         canvas.setBounds(0, 0, WIDTH, HEIGHT);
 
         panel.add(canvas);
@@ -106,7 +106,7 @@ public class Nivel3 extends JFrame implements Runnable{
         redibujados = aleatorio.nextInt(15)+8;
         ship = new Nave(0,WIDTH/2-30,HEIGHT-80, vidaMaxima);
         Assets.init();
-        asteroides = new Asteroide[aleatorio.nextInt(5)+3];         //Se inicializa el arreglo de asteroides
+        asteroides = new Asteroide[aleatorio.nextInt(14)+5];         //Se inicializa el arreglo de asteroides
         for(i = 0 ; i < asteroides.length ; i++){
             asteroides[i] = new Asteroide(0,WIDTH-50, HEIGHT/4);
         }
@@ -149,6 +149,9 @@ public class Nivel3 extends JFrame implements Runnable{
 
         if(vecesRedibujado < redibujados){
             for(i = 0 ; i < asteroides.length ; i++){
+                if(i == 2){
+                    G.drawImage(Assets.planetaMuerto, asteroides[i].getposX(),asteroides[i].getposY(),null);
+                }
                 G.drawImage(Assets.asteroidImages[asteroides[i].getTipoAsteroide()], asteroides[i].getposX(),asteroides[i].getposY(),null);
             }
         }else{
@@ -182,8 +185,12 @@ public class Nivel3 extends JFrame implements Runnable{
     }
 
     private void updateMarte(){
-        if(ship.getposY() >= posYmarte)
+        if(ship.getposY() >= posYmarte) {
             llegaMarte = true;
+            mars ganaste = new mars();
+            this.setVisible(false);
+            ganaste.setVisible(true);
+        }
         else
             this.posYmarte += 3;
     }
@@ -226,10 +233,12 @@ public class Nivel3 extends JFrame implements Runnable{
                     LoseWindow lw = new LoseWindow();
                     lw.setVisible(true);
                 }
-                updateMarte();
-                draw();
-                if(llegaMarte){
-                    stop();
+                if(vecesRedibujado >= redibujados){
+                    updateMarte();
+                    draw();
+                    if(llegaMarte){
+                        stop();
+                    }
                 }
 //                stop();
             } else if (!this.isVisible()) {

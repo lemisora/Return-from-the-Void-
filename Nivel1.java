@@ -25,7 +25,7 @@ public class Nivel1 extends JFrame implements Runnable{
 
     private Graphics2D G;                                     //Objeto para el dibujado de elementos graficos
 
-    private final int FPS = 90;                             //Limitacion de cuadros en ventana
+    private final int FPS = 144;                             //Limitacion de cuadros en ventana
     private double TARGETTIME = 1000000000/FPS;             //Tiempo objetivo para obtener un cuadro de los 40 por segundo
     private double delta = 0;                               //Diferencia de tiempo
     private int averagefps = FPS;                          //Cuadros promedio
@@ -84,8 +84,8 @@ public class Nivel1 extends JFrame implements Runnable{
         returnB.addActionListener(e-> goToMenu());
 
         //Agregamos componentes 
-        startB.setBounds(((WIDTH/2)-50), HEIGHT-5,80,30);
-        returnB.setBounds(2, HEIGHT-5, 85, 30);
+        startB.setBounds(((WIDTH/2)-50), HEIGHT+10,80,30);
+        returnB.setBounds(2, HEIGHT+10, 85, 30);
         canvas.setBounds(0, 0, WIDTH, HEIGHT);
         
         panel.add(canvas);
@@ -233,9 +233,15 @@ public class Nivel1 extends JFrame implements Runnable{
                     LoseWindow lw = new LoseWindow();
                     lw.setVisible(true);
                     stop();
-                }else if(!this.isVisible()){
-                    stop();
+                }else{
+                    this.nivelGanado = true;
+                    Win ganaste = new Win();
+                    this.setVisible(false);
+                    ganaste.setVisible(true);
                 }
+                stop();
+            } else if (!this.isVisible()) {
+                stop();
             }
         }
     }
